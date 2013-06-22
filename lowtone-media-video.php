@@ -27,7 +27,7 @@ namespace lowtone\media\video {
 		return trigger_error("Lowtone Content plugin is required", E_USER_ERROR) && false;
 
 	$__i = Package::init(array(
-			Package::INIT_PACKAGES => array("lowtone", "lowtone\\wp"),
+			Package::INIT_PACKAGES => array("lowtone", "lowtone\\wp", "lowtone\\media"),
 			Package::INIT_MERGED_PATH => __NAMESPACE__,
 			Package::INIT_SUCCESS => function() {
 
