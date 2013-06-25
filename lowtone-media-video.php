@@ -19,7 +19,8 @@
 namespace lowtone\media\video {
 
 	use lowtone\content\packages\Package,
-		lowtone\media\video\videos\Video;
+		lowtone\media\video\videos\Video,
+		lowtone\wp\WordPress;
 
 	// Includes
 	
@@ -101,6 +102,12 @@ namespace lowtone\media\video {
 					$__disablePostThumbnail = false;
 
 					return $html;
+				});
+
+				// Extend media editor
+				
+				add_action("wp_enqueue_media", function() {
+					wp_enqueue_script("lowtone_media_video_extend_featuredimage", plugins_url("/assets/scripts/extend_featuredimage.js", __FILE__), array("media-views"), false, true);
 				});
 
 				// Register textdomain
