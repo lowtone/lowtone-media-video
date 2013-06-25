@@ -54,55 +54,23 @@ namespace lowtone\media\video {
 					return sprintf('[video id=%s /]', $id);
 				}, 10, 3);
 
-				// Return poster
-				
-				$__disableDownsize = false;
-				
-				add_filter("image_downsize", function($image, $postId, $size) use (&$__disableDownsize) {
-					if ($__disableDownsize)
-						return $image;
+				// Attachment image src
 
-					$post = get_post($postId);
+				$__disableGetAttachmentImageSrc = false;
 
-					if (!preg_match("#^video\/#", $post->{Video::PROPERTY_POST_MIME_TYPE}))
-						return $image;
+				add_filter("get_attachment_image_src", function($src, $attachmentId, $size, $icon) use (&$__disableGetAttachmentImageSrc) {
+					if ($__disableGetAttachmentImageSrc)
+						return $src;
 
-					if (!($thumbnailId = get_post_thumbnail_id($postId)))
-						return $image;
+					$__disableGetAttachmentImageSrc = true;
 
-					$__disableDownsize = true;
+					if ($thumbnailId = get_post_thumbnail_id($attachmentId)) 
+						$src = wp_get_attachment_image_src($thumbnailId, $size, $icon);
 
-					$ret = image_downsize($thumbnailId, $size);
-
-					$__disableDownsize = false;
-
-					return $ret;
-				}, 0, 3);
-
-				// Post thumbnail
-				
-				$__disablePostThumbnail = false;
-				
-				add_filter("post_thumbnail_html", function($html, $postId, $thumbnailId, $size, $attr) use (&$__disablePostThumbnail) {
-					if ($__disablePostThumbnail)
-						return $html;
+					$__disableGetAttachmentImageSrc = false;
 					
-					$thumbnail = get_post($thumbnailId);
-
-					if (!preg_match("#^video\/#", $thumbnail->{Video::PROPERTY_POST_MIME_TYPE}))
-						return $html;
-
-					if (is_singular() && ($video = Video::fromPost($thumbnail)))
-						return $video->player();
-
-					$__disablePostThumbnail = true;
-
-					$html = get_the_post_thumbnail($thumbnailId, $size, $attr);
-
-					$__disablePostThumbnail = false;
-
-					return $html;
-				});
+					return $src;
+				}, 20, 4);
 
 				// Extend media editor
 				
