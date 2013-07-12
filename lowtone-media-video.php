@@ -40,7 +40,7 @@ namespace lowtone\media\video {
 					else if ($content) 
 						$video = new Video();
 
-					if (!isset($video))
+					if (!($video instanceof Video))
 						return '<!-- Invalid video resource -->';
 
 					return $video->player($atts);
