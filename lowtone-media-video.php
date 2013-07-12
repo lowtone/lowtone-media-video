@@ -102,7 +102,7 @@ namespace lowtone\media\video {
 					$__disablePostThumbnail = false;
 
 					return $html;
-				});
+				}, 10, 5);
 
 				// Extend media editor
 				
